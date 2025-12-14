@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Music Player Ultimate</title>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0f1014;
+            --bg-player: #151a25; /* Dark blue-ish tone from screenshot */
+            --primary: #ffffff;
+            --secondary: #b3b3b3;
+            --accent: #1ed760;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--primary);
+            height: 100vh;
+            overflow: hidden; /* App-like feel */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- UTILS --- */
+        .hidden { display: none !important; }
+        .icon-btn { background: none; border: none; color: var(--primary); font-size: 20px; cursor: pointer; padding: 10px; }
+        .icon-btn:active { opacity: 0.7; }
+
+        /* --- APP CONTAINER --- */
+        .app-view {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 100px; /* Space for mini player */
+            transition: transform 0.3s ease;
+        }
+
+        /* --- HEADER & PLAYLIST INFO --- */
+        .playlist-header {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        .playlist-banner {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+        }
+        .header-content {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .playlist-title { font-size: 32px; font-weight: 800; margin-bottom: 5px; }
+        .playlist-meta { font-size: 14px; color: rgba(255,255,255,0.8); }
+
+        /* --- NAVIGATION --- */
+        .top-nav {
+            position: absolute;
+            top: 0; left: 0; width: 100%;
+            padding: 15px;
+            display: flex; justify-content: space-between;
+            z-index: 10;
+        }
+        .nav-pill {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* --- SONG LIST --- */
+        .song-list { padding: 10px 15px; }
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .song-item:active { background: rgba(255,255,255,0.05); }
+        .song-thumb { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; margin-right: 15px; background: #333; }
+        .song-details { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .song-name { font-size: 15px; font-weight: 600; margin-bottom: 3px; color: white; }
+        .song-artist { font-size: 12px; color: var(--secondary); }
+        .song-playing { color: var(--accent); }
+        .song-playing .song-name { color: var(--accent); }
+
+        /* --- ADMIN PANEL --- */
+        .admin-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #121212;
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+            display: none;
+        }
+        .admin-modal.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; }
+        .form-input {
+            width: 100%; padding: 12px; background: #222; border: 1px solid #333;
+            color: white; border-radius: 8px; font-size: 14px;
+        }
+        .btn {
+            width: 100%; padding: 14px; border-radius: 30px; border: none;
+            font-weight: 700; cursor: pointer; margin-top: 10px;
+        }
+        .btn-primary { background: var(--accent); color: black; }
+        .btn-secondary { background: #333; color: white; }
+        
+        /* --- MINI PLAYER (Bottom Bar) --- */
+        .mini-player {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            height: 65px;
+            background: #202020;
+            border-top: 1px solid #333;
+            display: flex; align-items: center;
+            padding: 0 10px;
+            z-index: 1000;
+            transform: translateY(0);
+            transition: transform 0.3s;
+        }
+        .mini-player.hide { transform: translateY(100%); }
+        .mini-img { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; margin-right: 10px; }
+        .mini-info { flex: 1; overflow: hidden; }
+        .mini-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mini-artist { font-size: 12px; color: #aaa; }
+
+        /* --- FULL SCREEN PLAYER (The "JioSaavn" Look) --- */
+        .full-player {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, #2b3546 0%, #151a25 100%); /* Deep Blue Theme */
+            z-index: 5000;
+            display: flex; flex-direction: column;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .full-player.active { transform: translateY(0); }
+
+        /* FP Header */
+        .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-top: 10px; }
+        
+        /* FP Image */
+        .fp-image-container {
+            width: 100%;
+            aspect-ratio: 1/1;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 30px;
+        }
+        .fp-image {
+            width: 100%; height: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        /* FP Info */
+        .fp-info { margin-bottom: 10px; }
+        .fp-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: white; line-height: 1.2; }
+        
+        .fp-artist-row { display: flex; align-items: center; gap: 10px; }
+        .fp-artist { font-size: 15px; color: #aeb6c4; }
+        .follow-pill {
+            border: 1px solid #555;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            color: white;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* FP Actions (Share & Heart) */
+        .fp-actions-row {
+            display: flex; gap: 20px; margin-bottom: 25px; margin-top: 15px;
+        }
+        .fp-action-icon { font-size: 20px; color: white; }
+
+        /* FP Seek Bar */
+        .fp-progress-container { width: 100%; margin-bottom: 20px; }
+        .slider {
+            -webkit-appearance: none;
+            width: 100%; height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px; height: 12px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .time-row {
+            display: flex; justify-content: space-between;
+            font-size: 11px; color: #888; margin-top: 8px; font-weight: 600;
+        }
+
+        /* FP Controls */
+        .fp-controls {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 10px;
+        }
+        .ctrl-btn { color: white; font-size: 24px; background: none; border: none; cursor: pointer; }
+        .play-btn-large {
+            width: 70px; height: 70px;
+            background: white;
+            border-radius: 50%;
+            color: black;
+            font-size: 28px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Home View -->
+    <div class="app-view" id="home-view">
+        <div class="playlist-header">
+            <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=1000" class="playlist-banner" id="pl-banner">
+            <div class="top-nav">
+                <div class="icon-btn" onclick="openAdmin()"><i class="fas fa-cog"></i></div> <!-- Admin Gear -->
+                <div class="nav-pill">Admin Playlist</div>
+            </div>
+            <div class="header-content">
+                <div class="playlist-title" id="pl-title">My Hits</div>
+                <div class="playlist-meta" id="song-count">0 Songs • Made for you</div>
+            </div>
+        </div>
+
+        <div class="song-list" id="song-container">
+            <!-- Songs go here -->
+        </div>
+    </div>
+
+    <!-- Mini Player -->
+    <div class="mini-player hide" id="mini-player" onclick="openFullPlayer()">
+        <img src="" class="mini-img" id="mini-img">
+        <div class="mini-info">
+            <div class="mini-title" id="mini-title">Song Title</div>
+            <div class="mini-artist" id="mini-artist">Artist</div>
+        </div>
+        <div class="icon-btn" id="mini-play-btn" onclick="event.stopPropagation(); togglePlay()">
+            <i class="fas fa-play"></i>
+        </div>
+    </div>
+
+    <!-- Full Screen Player (Overlay) -->
+    <div class="full-player" id="full-player">
+        <div class="fp-header">
+            <button class="icon-btn" onclick="closeFullPlayer()"><i class="fas fa-chevron-down"></i></button>
+            <div style="font-size: 12px; font-weight: 600; letter-spacing: 1px; color: #ccc;">NOW PLAYING</div>
+            <button class="icon-btn"><i class="fas fa-ellipsis-v"></i></button>
+        </div>
+
+        <div class="fp-image-container">
+            <img src="" class="fp-image" id="fp-img">
+        </div>
+
+        <div class="fp-info">
+            <div class="fp-title" id="fp-title">Song Title</div>
+            <div class="fp-artist-row">
+                <span class="fp-artist" id="fp-artist">Artist Name</span>
+                <span class="follow-pill">+ Follow</span>
+            </div>
+        </div>
+
+        <div class="fp-actions-row">
+            <i class="fas fa-location-arrow fp-action-icon" style="transform: rotate(-45deg);"></i> <!-- Share Arrow Style -->
+            <i class="far fa-heart fp-action-icon" id="fp-heart" onclick="toggleLike()"></i>
+        </div>
+
+        <div class="fp-progress-container">
+            <input type="range" class="slider" id="seek-slider" min="0" value="0" oninput="seekAudio()">
+            <div class="time-row">
+                <span id="curr-time">0:00</span>
+                <span id="total-time">0:00</span>
+            </div>
+        </div>
+
+        <div class="fp-controls">
+            <button class="ctrl-btn"><i class="fas fa-random"></i></button> <!-- Shuffle -->
+            <button class="ctrl-btn" onclick="prevSong()"><i class="fas fa-step-backward"></i></button>
+            <button class="play-btn-large" onclick="togglePlay()">
+                <i class="fas fa-play" id="fp-play-icon"></i>
+            </button>
+            <button class="ctrl-btn" onclick="nextSong()"><i class="fas fa-step-forward"></i></button>
+            <button class="ctrl-btn"><i class="fas fa-retweet"></i></button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-modal" id="admin-panel">
+        <h2 style="margin-bottom:20px;">Admin Panel</h2>
+        
+        <h4 style="margin-bottom:10px; color:var(--accent);">Edit Playlist Info</h4>
+        <div class="form-group">
+            <label class="form-label">Playlist Name</label>
+            <input type="text" class="form-input" id="admin-pl-name" placeholder="My Playlist">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Playlist Banner URL</label>
+            <input type="text" class="form-input" id="admin-pl-banner" placeholder="https://...">
+        </div>
+        <button class="btn btn-primary" onclick="savePlaylistInfo()" style="margin-bottom:30px;">Update Playlist</button>
+
+        <h4 style="margin-bottom:10px; color:var(--accent);">Add New Song</h4>
+        <div class="form-group">
+            <label class="form-label">MP3 Link (Auto-detects title)</label>
+            <input type="text" class="form-input" id="inp-url" oninput="autoDetectMetadata()" placeholder="Paste audio link">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Song Title</label>
+            <input type="text" class="form-input" id="inp-title">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Artist</label>
+            <input type="text" class="form-input" id="inp-artist">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Image URL</label>
+            <input type="text" class="form-input" id="inp-img">
+        </div>
+        
+        <button class="btn btn-primary" onclick="addSong()">Add Song</button>
+        <button class="btn btn-secondary" onclick="closeAdmin()">Close</button>
+
+        <div style="margin-top:30px;">
+            <h4>Manage Songs</h4>
+            <div id="admin-list-container" style="margin-top:10px;"></div>
+        </div>
+    </div>
+
+    <script>
+        /* --- STATE --- */
+        let songs = JSON.parse(localStorage.getItem('my_music_songs')) || [
+            {
+                id: 1,
+                title: "Saiyaara (From Saiyaara)",
+                artist: "Mohit Chauhan",
+                image: "https://c.saavncdn.com/274/Ek-Tha-Tiger-Hindi-2012-20190603125139-500x500.jpg",
+                url: "https://ayush8481-dev.github.io/Saiyara/Saiyaara%20(From%20Saiyaara).mp3"
+            }
+        ];
+        
+        let playlistInfo = JSON.parse(localStorage.getItem('my_playlist_info')) || {
+            name: "Best of Mohit Chauhan",
+            banner: "https://c.saavncdn.com/274/Ek-Tha-Tiger-Hindi-2012-20190603125139-500x500.jpg"
+        };
+
+        let currentIndex = 0;
+        let audio = new Audio();
+        let isPlaying = false;
+        let likedSongs = [];
+
+        /* --- DOM ELEMENTS --- */
+        const homeView = document.getElementById('home-view');
+        const songContainer = document.getElementById('song-container');
+        const miniPlayer = document.getElementById('mini-player');
+        const fullPlayer = document.getElementById('full-player');
+        const adminPanel = document.getElementById('admin-panel');
+
+        /* --- INIT --- */
+        window.onload = () => {
+            loadPlaylistHeader();
+            renderSongs();
+            renderAdminList();
+            
+            // Set input values in admin
+            document.getElementById('admin-pl-name').value = playlistInfo.name;
+            document.getElementById('admin-pl-banner').value = playlistInfo.banner;
+        };
+
+        /* --- PLAYLIST LOGIC --- */
+        function loadPlaylistHeader() {
+            document.getElementById('pl-title').innerText = playlistInfo.name;
+            document.getElementById('pl-banner').src = playlistInfo.banner;
+            document.getElementById('song-count').innerText = `${songs.length} Songs • You`;
+        }
+
+        function savePlaylistInfo() {
+            const name = document.getElementById('admin-pl-name').value;
+            const banner = document.getElementById('admin-pl-banner').value;
+            if(name && banner) {
+                playlistInfo = { name, banner };
+                localStorage.setItem('my_playlist_info', JSON.stringify(playlistInfo));
+                loadPlaylistHeader();
+                alert('Playlist Updated!');
+            }
+        }
+
+        /* --- SONG LOGIC --- */
+        function renderSongs() {
+            songContainer.innerHTML = '';
+            songs.forEach((song, idx) => {
+                const div = document.createElement('div');
+                div.className = `song-item ${idx === currentIndex && isPlaying ? 'song-playing' : ''}`;
+                div.onclick = () => playSong(idx);
+                div.innerHTML = `
+                    <img src="${song.image}" class="song-thumb">
+                    <div class="song-details">
+                        <div class="song-name">${song.title}</div>
+                        <div class="song-artist">${song.artist}</div>
+                    </div>
+                    <div class="icon-btn"><i class="fas fa-ellipsis-v" style="font-size:14px; color:#555;"></i></div>
+                `;
+                songContainer.appendChild(div);
+            });
+            document.getElementById('song-count').innerText = `${songs.length} Songs`;
+        }
+
+        /* --- PLAYER LOGIC --- */
+        function playSong(index) {
+            if(index !== currentIndex || !audio.src) {
+                currentIndex = index;
+                audio.src = songs[index].url;
+            }
+            
+            if(audio.paused) {
+                audio.play();
+                isPlaying = true;
+            } else {
+                audio.pause();
+                isPlaying = false;
+            }
+            updateUI();
+            updateMediaSession();
+        }
+
+        function togglePlay() {
+            if(!audio.src && songs.length > 0) {
+                playSong(0);
+                return;
+            }
+            if(audio.paused) {
+                audio.play();
+                isPlaying = true;
+            } else {
+                audio.pause();
+                isPlaying = false;
+            }
+            updateUI();
+        }
+
+        function nextSong() {
+            let next = (currentIndex + 1) % songs.length;
+            playSong(next);
+        }
+
+        function prevSong() {
+            let prev = (currentIndex - 1 + songs.length) % songs.length;
+            playSong(prev);
+        }
+
+        function updateUI() {
+            const song = songs[currentIndex];
+            
+            // Icons
+            const icon = isPlaying ? 'fa-pause' : 'fa-play';
+            document.getElementById('mini-play-btn').innerHTML = `<i class="fas ${icon}"></i>`;
+            document.getElementById('fp-play-icon').className = `fas ${icon}`;
+
+            // Mini Player Data
+            document.getElementById('mini-title').innerText = song.title;
+            document.getElementById('mini-artist').innerText = song.artist;
+            document.getElementById('mini-img').src = song.image;
+            miniPlayer.classList.remove('hide');
+
+            // Full Player Data
+            document.getElementById('fp-title').innerText = song.title;
+            document.getElementById('fp-artist').innerText = song.artist;
+            document.getElementById('fp-img').src = song.image;
+
+            // Highlight List
+            renderSongs();
+        }
+
+        function toggleLike() {
+            const heart = document.getElementById('fp-heart');
+            if(heart.classList.contains('far')) {
+                heart.classList.remove('far');
+                heart.classList.add('fas');
+                heart.style.color = '#1ed760';
+            } else {
+                heart.classList.remove('fas');
+                heart.classList.add('far');
+                heart.style.color = 'white';
+            }
+        }
+
+        /* --- SEEK BAR LOGIC --- */
+        audio.addEventListener('timeupdate', () => {
+            const curr = audio.currentTime;
+            const dur = audio.duration;
+            
+            if(isNaN(dur)) return;
+
+            const slider = document.getElementById('seek-slider');
+            slider.max = dur;
+            slider.value = curr;
+
+            document.getElementById('curr-time').innerText = formatTime(curr);
+            document.getElementById('total-time').innerText = formatTime(dur);
+        });
+
+        function seekAudio() {
+            const slider = document.getElementById('seek-slider');
+            audio.currentTime = slider.value;
+        }
+
+        function formatTime(s) {
+            const min = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return `${min}:${sec < 10 ? '0'+sec : sec}`;
+        }
+
+        audio.addEventListener('ended', nextSong);
+
+        /* --- FULL PLAYER TOGGLES --- */
+        function openFullPlayer() {
+            fullPlayer.classList.add('active');
+        }
+        function closeFullPlayer() {
+            fullPlayer.classList.remove('active');
+        }
+
+        /* --- ADMIN LOGIC --- */
+        function openAdmin() { adminPanel.classList.add('active'); }
+        function closeAdmin() { adminPanel.classList.remove('active'); }
+
+        function autoDetectMetadata() {
+            const url = document.getElementById('inp-url').value;
+            if(url.includes('/')) {
+                let filename = url.split('/').pop().split('?')[0];
+                filename = decodeURIComponent(filename).replace('.mp3','').replace(/%20/g, ' ');
+                document.getElementById('inp-title').value = filename;
+            }
+        }
+
+        function addSong() {
+            const url = document.getElementById('inp-url').value;
+            const title = document.getElementById('inp-title').value;
+            const artist = document.getElementById('inp-artist').value;
+            const img = document.getElementById('inp-img').value;
+
+            if(url && title) {
+                songs.push({ id: Date.now(), title, artist, image: img, url });
+                localStorage.setItem('my_music_songs', JSON.stringify(songs));
+                renderSongs();
+                renderAdminList();
+                
+                // Reset Fields
+                document.getElementById('inp-url').value = '';
+                document.getElementById('inp-title').value = '';
+                document.getElementById('inp-artist').value = '';
+                document.getElementById('inp-img').value = '';
+                
+                alert("Song Added!");
+            }
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-list-container');
+            list.innerHTML = '';
+            songs.forEach((song, idx) => {
+                const div = document.createElement('div');
+                div.style.cssText = "display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #333;";
+                div.innerHTML = `
+                    <span style="font-size:14px;">${song.title}</span>
+                    <button onclick="deleteSong(${idx})" style="color:red; background:none; border:none; cursor:pointer;">Delete</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function deleteSong(index) {
+            if(confirm('Delete song?')) {
+                songs.splice(index, 1);
+                localStorage.setItem('my_music_songs', JSON.stringify(songs));
+                renderSongs();
+                renderAdminList();
+            }
+        }
+
+        function updateMediaSession() {
+            if ('mediaSession' in navigator) {
+                const song = songs[currentIndex];
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: song.title,
+                    artist: song.artist,
+                    artwork: [
+                        { src: song.image, sizes: '96x96', type: 'image/png' },
+                        { src: song.image, sizes: '512x512', type: 'image/png' }
+                    ]
+                });
+                navigator.mediaSession.setActionHandler('play', togglePlay);
+                navigator.mediaSession.setActionHandler('pause', togglePlay);
+                navigator.mediaSession.setActionHandler('previoustrack', prevSong);
+                navigator.mediaSession.setActionHandler('nexttrack', nextSong);
+            }
+        }
+
+    </script>
+</body>
+</html>
