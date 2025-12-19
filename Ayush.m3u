@@ -1,0 +1,109 @@
+#EXTM3U
+
+# --- THE "&" GROUP ---
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/%26flix_2025.svg/512px-%26flix_2025.svg.png" tvg-name="&flix (480p)" group-title="& Group",&flix
+https://edge3-moblive.yuppcdn.net/drm/smil:nflixdrm.smil/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/VYh3V8E.png" tvg-name="&pictures (1080p)" group-title="& Group",&pictures
+http://66.102.120.18:8000/play/a01t/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/32W50Y6.png" tvg-name="&TV (1080p)" group-title="& Group",&TV
+https://amg01117-amg01117c1-amgplt0165.playout.now3.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/9mK6dgM.png" tvg-name="&xplor HD (1080p)" group-title="& Group",&xplor HD
+http://66.102.120.18:8000/play/a012/index.m3u8
+
+# --- STAR NETWORK ---
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/a/a4/Star_Kiran_logo_2023.png" tvg-name="Star Kiran (576p)" group-title="Star Network",Star Kiran
+https://live.dinesh29.com.np/stream/jiotvplus/starkiran/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/1dHarb7.png" tvg-name="Star Pravah Picture HD (1080p)" group-title="Star Network",Star Pravah Picture HD
+https://live.dinesh29.com.np/stream/jiotvplus/starpravahpicturehd/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/H1jhHDl.png" tvg-name="Star Utsav (576p)" group-title="Star Network",Star Utsav
+http://163.61.227.29:8000/play/a04p/index.m3u8
+
+# --- SONY NETWORK ---
+#EXTINF:-1 tvg-logo="https://i.imgur.com/uiDnvqt.png" tvg-name="Sony Marathi (1080p)" group-title="Sony Network",Sony Marathi
+https://nxtlive.net/sliv/stream.php?e=.m3u8&id=985980256
+
+# --- COLORS NETWORK ---
+#EXTINF:-1 tvg-logo="https://i.imgur.com/EbHSQAJ.png" tvg-name="Colors Cineplex Bollywood (576p)" group-title="Colors Network",Colors Cineplex Bollywood
+http://103.182.170.32:8888/play/a01o
+
+# --- ZEE NETWORK ---
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Zee_24_Ghanta_2025.svg/512px-Zee_24_Ghanta_2025.svg.png" tvg-name="Zee 24 Ghanta (576p)" group-title="Zee Network",Zee 24 Ghanta
+http://202.164.50.194:8000/play/a04n/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/RKrvmVo.png" tvg-name="Zee 24 Kalak (720p)" group-title="Zee Network",Zee 24 Kalak
+https://livetv-channels.b-cdn.net/8077/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/KVDGQI1.png" tvg-name="Zee 24 Taas (720p)" group-title="Zee Network",Zee 24 Taas
+https://dgrvlduwztkd4.cloudfront.net/index_5.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Zee_Bharat_2025.svg/512px-Zee_Bharat_2025.svg.png" tvg-name="Zee Bharat (720p)" group-title="Zee Network",Zee Bharat
+https://vg-zeefta.akamaized.net/ptnr-yupptv/title-zeehindustan/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/96bbab12-582e-4540-af70-510ab6824581/main.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/e26mQ7x.png" tvg-name="Zee Bihar Jharkhand (720p)" group-title="Zee Network",Zee Bihar Jharkhand
+https://raw.githubusercontent.com/Alstruit/adaptive-streams/alstruit-4_24_in/streams/in/ZeeBiharJharkhand.m3u8
+#EXTINF:-1 tvg-logo="https://framerusercontent.com/images/mqfJ18x4jYe0GbZUbxSHsbnWU.png" tvg-name="Zee Bollymovies" group-title="Zee Network",Zee Bollymovies
+https://amg17931-zee-amg17931c8-samsung-th-6526.playouts.now.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/vkWBtL4.png" tvg-name="Zee Business (720p)" group-title="Zee Network",Zee Business
+https://dwby15d04agvq.cloudfront.net/index_1.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Zee_Cinema_2025.svg/512px-Zee_Cinema_2025.svg.png" tvg-name="Zee Cinema (1080p)" group-title="Zee Network",Zee Cinema
+https://amg17931-zee-amg17931c5-samsung-au-8873.playouts.now.amagi.tv/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/jeBUXYz.png" tvg-name="Zee Delhi NCR Haryana (720p)" group-title="Zee Network",Zee Delhi NCR Haryana
+https://vg-zeefta.akamaized.net/ptnr-yupptv/title-zeedelhincr/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/cc483a15-1b39-4642-872d-5d08d362ed01/main.m3u8
+#EXTINF:-1 tvg-name="Zee Kannada News (720p)" group-title="Zee Network",Zee Kannada News
+https://d3vzwoqcbpfm8p.cloudfront.net/index_4.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/YccuVVI.png" tvg-name="Zee Madhya Pradesh Chhattisgarh (720p)" group-title="Zee Network",Zee Madhya Pradesh Chhattisgarh
+https://vg-zeefta.akamaized.net/ptnr-yupptv/title-zeemadhyachhattisgarh/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/2ab17056-6187-4f0e-a34d-f436ac479d6c/main.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Zee_news.svg/512px-Zee_news.svg.png" tvg-name="Zee News (1080p)" group-title="Zee Network",Zee News
+https://dknttpxmr0dwf.cloudfront.net/index_57.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/MePj7ET.png" tvg-name="Zee News Malayalam (720p)" group-title="Zee Network",Zee News Malayalam
+https://d1ty2af03alkwd.cloudfront.net/index_4.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/wnALPbu.png" tvg-name="Zee Punjab Haryana Himachal (720p)" group-title="Zee Network",Zee Punjab Haryana Himachal
+https://vg-zeefta.akamaized.net/ptnr-yupptv/title-zeepunjabharyanahima/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/65eed269-2f3a-4dd0-ac89-d18959af28e3/main.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/iYrrGlL.png" tvg-name="Zee Rajasthan (720p)" group-title="Zee Network",Zee Rajasthan
+https://vg-zeefta.akamaized.net/ptnr-yupptv/title-zeerajashthannews/v1/master/611d79b11b77e2f571934fd80ca1413453772ac7/8e864b9a-1681-41a0-99a6-387490bc5b24/main.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/gxKFKRG.png" tvg-name="Zee Uttar Pradesh/Uttarakhand (720p)" group-title="Zee Network",Zee Uttar Pradesh/Uttarakhand
+https://duw35ict5q7th.cloudfront.net/index_3.m3u8
+
+# --- KIDS ---
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Animax.png/512px-Animax.png" tvg-name="Animax" group-title="Kids",Animax
+https://amg02159-kcglobal-amg02159c1-samsung-in-521.playouts.now.amagi.tv/playlist/amg02159-kcglobal-animax-samsungin/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/MHrufYc.png" tvg-name="Chintu TV (576p)" group-title="Kids",Chintu TV
+https://live.dinesh29.com.np/stream/jiotvplus/chintutv/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/Bvbf9o7.png" tvg-name="Gubbare (1080p)" group-title="Kids",Gubbare
+https://epiconvh.akamaized.net/live/gubbare/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/1h1LzPF.png" tvg-name="Kushi TV (576p)" group-title="Kids",Kushi TV
+https://live.dinesh29.com.np/stream/jiotvplus/kushitv/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/BbFNpMr.jpeg" tvg-name="ZB Cartoon (1080p)" group-title="Kids",ZB Cartoon
+https://server.zillarbarta.com/zbcatun/video.m3u8
+
+# --- SPORTS ---
+#EXTINF:-1 tvg-logo="https://i.imgur.com/J2Ky5OO.png" tvg-name="DD Sports (720p)" group-title="Sports",DD Sports
+https://cdn-6.pishow.tv/live/13/master.m3u8
+
+# --- DD FREE DISH (OTHER FTA) ---
+#EXTINF:-1 tvg-logo="https://i.imgur.com/6JTb3cd.png" tvg-name="Dangal TV (720p)" group-title="Entertainment",Dangal TV
+https://live-dangal.akamaized.net/liveabr/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/UNNcOef.png" tvg-name="Shemaroo TV (720p)" group-title="Entertainment",Shemaroo TV
+https://cdn-3.pishow.tv/live/230/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/W5YlC2v.png" tvg-name="Ishara TV (1080p)" group-title="Entertainment",Ishara TV
+https://epiconvh.akamaized.net/live/ishaara/master.m3u8
+#EXTINF:-1 tvg-logo="https://www.epicon.in/img/nazara-logo.png" tvg-name="Nazara (1080p)" group-title="Entertainment",Nazara
+https://epiconvh.akamaized.net/live/nazara/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/M9kMFJl.png" tvg-name="B4U Movies India (1080p)" group-title="Movies",B4U Movies
+https://cdnb4u.wiseplayout.com/B4U_Movies/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/CKLn0ft.png" tvg-name="B4U Kadak (1080p)" group-title="Movies",B4U Kadak
+https://cdnb4u.wiseplayout.com/B4U_Kadak/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/oTBVML2.png" tvg-name="Manoranjan Movies (720p)" group-title="Movies",Manoranjan Movies
+https://cdn-2.pishow.tv/live/228/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/qfMEz78.png" tvg-name="Manoranjan Grand (720p)" group-title="Movies",Manoranjan Grand
+https://cdn-1.pishow.tv/live/1011/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/RpIdCB3.png" tvg-name="Aaj Tak (1080p)" group-title="News",Aaj Tak
+https://livehub-voidnet.onrender.com/cluster/streamcore/in/AAJTAK_REDIS.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/ABP_News_logo.svg/512px-ABP_News_logo.svg.png" tvg-name="ABP News (1080p)" group-title="News",ABP News
+https://d2l4ar6y3mrs4k.cloudfront.net/live-streaming/abpnews-livetv/master.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/ztn2IR8.png" tvg-name="India TV (720p)" group-title="News",India TV
+https://pl-indiatvnews.akamaized.net/out/v1/db79179b608641ceaa5a4d0dd0dca8da/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/x72O77X.png" tvg-name="News 24 (720p)" group-title="News",News 24
+https://vidcdn.vidgyor.com/news24-origin/liveabr/playlist.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/RpIdCB3.png" tvg-name="Aaj Tak (1080p)" group-title="News",Aaj Tak
+https://livehub-voidnet.onrender.com/cluster/streamcore/in/AAJTAK_REDIS.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/Jx1OX9N.png" tvg-name="Bharat24 (1080p)" group-title="News",Bharat24
+https://cdn.ottlive.co.in/bharat24/index.fmp4.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/GEqUslW.png" tvg-name="TV9 Bharatvarsh (720p)" group-title="News",TV9 Bharatvarsh
+https://dyjmyiv3bp2ez.cloudfront.net/pub-iotv9hinjzgtpe/liveabr/playlist.m3u8
